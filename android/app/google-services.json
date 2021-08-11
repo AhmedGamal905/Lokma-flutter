@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "661958603552",
+    "project_id": "lokma-94c1e",
+    "storage_bucket": "lokma-94c1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661958603552:android:19688072e653c65d4a1d45",
+        "android_client_info": {
+          "package_name": "com.example.lokma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "661958603552-rlsq70d4a1gkt2doh4op37j4e5tobole.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQgLfUewG2ppsS-RJPy_n4W13FuTEutxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661958603552-rlsq70d4a1gkt2doh4op37j4e5tobole.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
