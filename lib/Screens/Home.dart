@@ -161,7 +161,8 @@ class _HomeState extends State<Home> {
                   ),
                   TextButton(
                     onPressed: () {
-                      _postData();
+                      // _postData();
+                      Navigator.pushNamed(context, '/Login');
                     },
                     child: Text(
                       'Logout',

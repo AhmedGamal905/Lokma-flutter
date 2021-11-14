@@ -123,7 +123,7 @@ class _OrderPageState extends State<OrderPage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.00),
                           child: Text(
                             "Status : " + order.status.status.toString(),
                             style: TextStyle(
