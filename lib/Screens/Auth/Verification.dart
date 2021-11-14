@@ -52,17 +52,16 @@ class _VerificateState extends State<Verificate> {
         ),
       );
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, '/NavigationBar');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/NavigationBar', (Route<dynamic> route) => false);
       } else {}
-      print(response.data.toString());
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);
@@ -124,7 +123,6 @@ class _VerificateState extends State<Verificate> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Enter your verification code';
-                  // ignore: missing_returnre
                 }
                 return null;
               },

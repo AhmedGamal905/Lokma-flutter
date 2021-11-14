@@ -26,14 +26,13 @@ class _CategoriesViewAllState extends State<CategoriesViewAll> {
       } else {
         return <Category>[];
       }
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);

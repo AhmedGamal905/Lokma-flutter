@@ -35,7 +35,7 @@ class _LoginState extends State<Login> {
 
   Dio dio = Dio();
 
-  Future<void> _postData() async {
+  Future<void> _logIn() async {
     if (!_globalKey.currentState.validate()) return;
     try {
       Map<String, String> data = {
@@ -54,20 +54,19 @@ class _LoginState extends State<Login> {
         ),
       );
       if (response.statusCode == 200) {
-        Navigator.pushReplacementNamed(context, '/NavigationBar');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/NavigationBar', (Route<dynamic> route) => false);
       } else {}
-      print(response.data.toString());
       Map value = response.data;
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.setString("access_token", value['access_token']);
-    } catch (e) {
-      print(e.toString());
+      await preferences.setString('access_token', value['access_token']);
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);
@@ -140,7 +139,6 @@ class _LoginState extends State<Login> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Enter phone number';
-                  // ignore: missing_returnre
                 }
                 return null;
               },
@@ -157,7 +155,6 @@ class _LoginState extends State<Login> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Enter Password ';
-                  // ignore: missing_returnre
                 }
                 return null;
               },
@@ -165,7 +162,6 @@ class _LoginState extends State<Login> {
             Padding(
               padding: EdgeInsets.all(16.0),
               child: GestureDetector(
-                //todo
                 onTap: () {
                   Navigator.pushNamed(context, '/ForgotPassword');
                 },
@@ -185,7 +181,7 @@ class _LoginState extends State<Login> {
             CustomButton(
               text: 'Login',
               onTap: () {
-                _postData();
+                _logIn();
               },
             ),
             SizedBox(height: 24),
@@ -212,6 +208,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 30,
             ),
           ],
         ),

@@ -74,7 +74,6 @@ class _StoreOrderState extends State<StoreOrder> {
           },
         ),
       );
-      print(response.data.toString());
       if (response.statusCode == 200) {
         context.read<CartProvider>().empty();
         return showDialog(
@@ -89,16 +88,13 @@ class _StoreOrderState extends State<StoreOrder> {
           ),
         );
       } else {}
-      print(response.data.toString());
-      print(preferences.get('token'));
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);

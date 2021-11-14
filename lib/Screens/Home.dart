@@ -26,20 +26,18 @@ class _HomeState extends State<Home> {
           headers: {'Accept': 'application/json'},
         ),
       );
-      print(response.data.toString());
       if (response.statusCode == 200) {
         return Categories.fromJson(response.data).categories;
       } else {
         return <Category>[];
       }
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);
@@ -51,7 +49,7 @@ class _HomeState extends State<Home> {
 
   Dio dio = Dio();
 
-  Future<void> _postData() async {
+  Future<void> _logout() async {
     try {
       Map<String, String> data = {};
 
@@ -68,17 +66,17 @@ class _HomeState extends State<Home> {
         ),
       );
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, '/Login');
+        preferences.remove('access_token');
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/Login', (Route<dynamic> route) => false);
       } else {}
-      print(response.data.toString());
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () => Navigator.pop(context),
         ),
@@ -94,20 +92,18 @@ class _HomeState extends State<Home> {
           headers: {'Accept': 'application/json'},
         ),
       );
-      print(response.data.toString());
       if (response.statusCode == 200) {
         return ProductsModel.fromJson(response.data);
       } else {
         return ProductsModel();
       }
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);
@@ -161,7 +157,7 @@ class _HomeState extends State<Home> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // _postData();
+                      _logout();
                       Navigator.pushNamed(context, '/Login');
                     },
                     child: Text(

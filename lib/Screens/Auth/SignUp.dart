@@ -40,7 +40,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   Dio dio = Dio();
-  Future<void> _postData() async {
+  Future<void> _signUp() async {
     if (!_globalKey.currentState.validate()) return;
     try {
       Map<String, String> data = {
@@ -62,20 +62,19 @@ class _SignUpState extends State<SignUp> {
         ),
       );
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, '/Verificate');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/Verificate', (Route<dynamic> route) => false);
       } else {}
-      print(response.data.toString());
       Map value = response.data;
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.setString("access_token", value['access_token']);
-    } catch (e) {
-      print(e.toString());
+      await preferences.setString('access_token', value['access_token']);
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);
@@ -130,7 +129,6 @@ class _SignUpState extends State<SignUp> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Enter youName';
-                  // ignore: missing_returnre
                 }
                 return null;
               },
@@ -146,7 +144,6 @@ class _SignUpState extends State<SignUp> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Enter you E-mail';
-                  // ignore: missing_returnre
                 }
                 return null;
               },
@@ -162,7 +159,6 @@ class _SignUpState extends State<SignUp> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Enter you Phone';
-                  // ignore: missing_returnre
                 }
                 return null;
               },
@@ -178,7 +174,6 @@ class _SignUpState extends State<SignUp> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Enter you Password';
-                  // ignore: missing_returnre
                 }
                 return null;
               },
@@ -194,7 +189,6 @@ class _SignUpState extends State<SignUp> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Re-Enter you Password';
-                  // ignore: missing_returnre
                 }
                 return null;
               },
@@ -220,7 +214,6 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        //todo
                         onTap: () {},
                         child: Text(
                           "Terms & Conditions",
@@ -238,7 +231,6 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       GestureDetector(
-                        //todo
                         onTap: () {},
                         child: Text(
                           "Privecy Poilcy",
@@ -259,8 +251,11 @@ class _SignUpState extends State<SignUp> {
             CustomButton(
               text: "Create Account",
               onTap: () {
-                _postData();
+                _signUp();
               },
+            ),
+            SizedBox(
+              height: 30,
             ),
           ],
         ),

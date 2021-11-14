@@ -25,20 +25,18 @@ class _OrderPageState extends State<OrderPage> {
           },
         ),
       );
-      print(response.data.toString());
       if (response.statusCode == 200) {
         return PreviousOrders.fromJson(response.data);
       } else {
         return PreviousOrders();
       }
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
       Future.error(e);
       return showDialog(
         context: context,
         builder: (conx) => CustomDialog(
           title: 'Oh somethin went wrong!',
-          body: e.toString(),
+          body: e.response.statusMessage.toString(),
           buttonText: 'cancel',
           buttonOnPressed: () {
             Navigator.pop(context);
